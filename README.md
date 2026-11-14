@@ -81,6 +81,13 @@ A good editor helps a lot: [VS Code](https://code.visualstudio.com) with the
 
 Suggested pace: one lesson a day. Do the exercise **before** opening the solution.
 
+## Next step: the professional framework
+
+After the lessons, [framework/README.md](framework/README.md) shows the same ideas put together the way test automation
+engineers build a real suite: page objects and components, an API layer, test data builders with automatic clean-up,
+custom fixtures and matchers, config from `.env`, `@smoke`/`@regression` tags, HTML + JUnit reports, traces on failure,
+ESLint and Prettier. Start with `npm run fw:smoke` (test copy running, as always).
+
 ## Project layout
 
 ```
@@ -90,6 +97,7 @@ support/test.ts          test + expect to import in every lesson (blocks port 80
 support/data.ts          practice data helpers (accounts and trades through the API)
 lessons/NN-name/         README.md, exercise.spec.ts, solution.spec.ts
 ci/playwright.yml        a GitHub Actions workflow for lesson 10 (not switched on)
+framework/               the professional framework (its own README, config and tests)
 ```
 
 ## Where the examples come from
