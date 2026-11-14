@@ -1,0 +1,68 @@
+# Lesson 10: a GitHub Actions workflow for these tests.
+#
+# It is kept in ci/ on purpose, so it does NOT run yet (your free GitHub Actions minutes are used up).
+# To switch it on later: copy this file to .github/workflows/playwright.yml and add the secret described below.
+#
+# What it does: starts a brand-new, EMPTY journal on port 8001 inside GitHub's computer (your own data is never
+# there), marks it as a test copy, and runs the solutions against it.
+
+name: Playwright lessons
+
+on:
+  workflow_dispatch: # only when you press "Run workflow" on the Actions tab (never on every push)
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Get these lessons
+        uses: actions/checkout@v4
+
+      - name: Get the journal app (a private repo, so it needs a token)
+        uses: actions/checkout@v4
+        with:
+          repository: qaimrankhanpathan/trading-journal-propfirm
+          path: journal
+          # Settings > Secrets and variables > Actions > New secret named JOURNAL_REPO_TOKEN:
+          # a fine-grained GitHub token with read-only "Contents" access to trading-journal-propfirm only.
+          token: ${{ secrets.JOURNAL_REPO_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Build the journal
+        run: |
+          pip install -r journal/backend/requirements.txt
+          cd journal/frontend && npm ci && npm run build
+
+      - name: Start an empty journal test copy on port 8001
+        run: |
+          mkdir -p "$RUNNER_TEMP/journal-data"
+          cd journal/backend
+          JOURNAL_DATA_DIR="$RUNNER_TEMP/journal-data" JOURNAL_BACKUP_DIR="$RUNNER_TEMP/journal-data/backups" \
+          JOURNAL_DISABLE_SCHEDULER=1 JOURNAL_TEST_COPY=1 \
+          nohup python -m uvicorn app.main:app --host 127.0.0.1 --port 8001 > "$RUNNER_TEMP/journal.log" 2>&1 &
+          npx --yes wait-on --timeout 60000 http://127.0.0.1:8001/api/health
+
+      - name: Install the lessons and a browser
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Run the solutions
+        run: npx playwright test --project=solutions
+        env:
+          CI: "true"
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

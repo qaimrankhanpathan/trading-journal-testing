@@ -1,0 +1,19 @@
+{
+  "name": "trading-journal-testing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Learn Playwright step by step, using the Trading Journal test copy (port 8001) as the practice app.",
+  "scripts": {
+    "test": "playwright test --project=exercises",
+    "solutions": "playwright test --project=solutions",
+    "ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen http://localhost:8001",
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.6.0"
+  }
+}
