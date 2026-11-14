@@ -1,0 +1,7 @@
+[
+  { "case": "1 lot buy wins 20 pips", "side": "buy", "lots": 1, "pips": 20, "expectedPnl": 200 },
+  { "case": "1 lot buy loses 10 pips", "side": "buy", "lots": 1, "pips": -10, "expectedPnl": -100 },
+  { "case": "1 lot sell wins 20 pips", "side": "sell", "lots": 1, "pips": 20, "expectedPnl": 200 },
+  { "case": "0.5 lots sell loses 10 pips", "side": "sell", "lots": 0.5, "pips": -10, "expectedPnl": -50 },
+  { "case": "2 lots buy wins 15 pips", "side": "buy", "lots": 2, "pips": 15, "expectedPnl": 300 }
+]

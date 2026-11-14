@@ -4,3 +4,7 @@ playwright-report/
 blob-report/
 playwright/.cache/
 .env
+
+# Framework reports and local settings
+framework/reports/
+framework/.env

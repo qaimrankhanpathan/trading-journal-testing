@@ -9,11 +9,31 @@
     "ui": "playwright test --ui",
     "report": "playwright show-report",
     "codegen": "playwright codegen http://localhost:8001",
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p . && tsc -p framework",
+    "fw:test": "playwright test -c framework",
+    "fw:smoke": "playwright test -c framework --grep @smoke",
+    "fw:regression": "playwright test -c framework --grep @regression",
+    "fw:api": "playwright test -c framework --project=api",
+    "fw:ui": "playwright test -c framework --project=desktop",
+    "fw:headed": "playwright test -c framework --project=desktop --headed --workers=1",
+    "fw:debug": "playwright test -c framework --project=desktop --debug",
+    "fw:report": "playwright show-report framework/reports/html",
+    "lint": "eslint framework",
+    "lint:fix": "eslint framework --fix",
+    "format": "prettier --write framework",
+    "format:check": "prettier --check framework",
+    "check": "npm run typecheck && npm run lint && npm run format:check",
+    "fw:functional": "playwright test -c framework --project=desktop --grep @functional"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "9.39.5",
     "@playwright/test": "1.63.0",
     "@types/node": "^24.0.0",
-    "typescript": "^5.6.0"
+    "eslint": "9.39.5",
+    "eslint-plugin-playwright": "2.11.0",
+    "prettier": "3.9.10",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "8.70.1"
   }
 }

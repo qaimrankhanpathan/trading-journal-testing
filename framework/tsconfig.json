@@ -1,0 +1,19 @@
+{
+  // The framework's own TypeScript settings. It reuses the course settings (../tsconfig.json) and adds
+  // short import names ("path aliases"), so a test writes `@pages` instead of `../../src/pages/index`.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+      "@config": ["config/env.ts"],
+      "@api": ["src/api/index.ts"],
+      "@pages": ["src/pages/index.ts"],
+      "@data": ["src/data/index.ts"],
+      "@fixtures": ["src/fixtures/index.ts"],
+      "@utils": ["src/utils/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "test-data/*.json"],
+  "exclude": ["reports"]
+}

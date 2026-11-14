@@ -1,0 +1,35 @@
+/**
+ * Every page of the journal and the text in its main heading. Used by the page-health tests, which open each one.
+ * A new page in the journal = one new line here.
+ */
+export const ALL_PAGES: { path: string; heading: string }[] = [
+  { path: "/", heading: "Dashboard" },
+  { path: "/today/", heading: "Today checklist" },
+  { path: "/plan/", heading: "Trade plan" },
+  { path: "/psychology/", heading: "Psychology" },
+  { path: "/trades/", heading: "Trades" },
+  { path: "/news/", heading: "News" },
+  { path: "/accounts/", heading: "Accounts" },
+  { path: "/business/", heading: "Business accounts" },
+  { path: "/calculator/", heading: "Position size" },
+  { path: "/checks/", heading: "Data checks" },
+  { path: "/coach/", heading: "Coach" },
+  { path: "/copier/", heading: "Trade copier" },
+  { path: "/data/", heading: "Data & automation" },
+  { path: "/edge/", heading: "Edge review" },
+  { path: "/exits/", heading: "Exit analysis" },
+  { path: "/help/", heading: "Explanations" },
+  { path: "/import/", heading: "Import / Export" },
+  { path: "/labs/", heading: "FundingPips Labs" },
+  { path: "/lessons/", heading: "Mistakes & lessons" },
+  { path: "/playbook/", heading: "Playbook" },
+  { path: "/report/", heading: "Review report" },
+  { path: "/scalping/", heading: "Scalping" },
+  { path: "/science/", heading: "Statistics" },
+  { path: "/sessions/", heading: "Session clock" },
+  { path: "/settings/", heading: "Settings" },
+  { path: "/simulator/", heading: "Pass simulator" },
+  { path: "/statement/", heading: "Monthly statement" },
+  { path: "/weekly/", heading: "Weekly review" },
+  { path: "/whatif/", heading: "What-if lab" },
+];
