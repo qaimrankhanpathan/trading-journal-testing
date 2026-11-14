@@ -1,0 +1,4 @@
+{
+  // VS Code suggests these when you open the folder: click "Install" on the pop-up.
+  "recommendations": ["ms-playwright.playwright", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+}
