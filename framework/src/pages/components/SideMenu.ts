@@ -8,10 +8,19 @@ import { step } from "../../utils/step";
 export class SideMenu {
   readonly root: Locator;
   readonly morePages: Locator;
+  readonly themeButton: Locator;
+  readonly largerText: Locator;
+  readonly smallerText: Locator;
+  readonly textSizeReset: Locator;
 
   constructor(private readonly page: Page) {
     this.root = page.getByRole("navigation").first();
     this.morePages = this.root.getByRole("button", { name: "More pages" });
+    this.themeButton = this.root.getByRole("button", { name: /Switch to (light|dark) theme/ });
+    const textSize = this.root.getByRole("group", { name: "Text size" });
+    this.largerText = textSize.getByRole("button", { name: "Larger text" });
+    this.smallerText = textSize.getByRole("button", { name: "Smaller text" });
+    this.textSizeReset = textSize.getByRole("button", { name: /%$/ });
   }
 
   link(name: string): Locator {
@@ -25,5 +34,15 @@ export class SideMenu {
       await this.morePages.click();
     }
     await this.link(name).click();
+  }
+
+  /** The theme the page is showing now: "dark" or "light". */
+  async currentTheme(): Promise<string | null> {
+    return this.page.locator("html").getAttribute("data-theme");
+  }
+
+  @step("Switch the colour theme")
+  async toggleTheme(): Promise<void> {
+    await this.themeButton.click();
   }
 }

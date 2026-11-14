@@ -20,18 +20,19 @@ It tests the journal **test copy on port 8001 only**, with the same safety guard
 
 ## Commands
 
-| Command                               | What it runs                                                   | When a professional runs it                                        |
-| ------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `npm run fw:smoke`                    | only `@smoke` tests (about 20, under a minute)                 | first, after every change: "is it basically working?"              |
-| `npm run fw:regression`               | only `@regression` tests                                       | before merging a change: "did I break anything that used to work?" |
-| `npm run fw:test`                     | everything, on desktop and phone screens                       | before a release                                                   |
-| `npm run fw:api`                      | the API tests only (no browser, a few seconds)                 | while working on the backend                                       |
-| `npm run fw:ui`                       | the browser tests on a desktop screen                          | while working on the screens                                       |
-| `npm run fw:headed`                   | the browser tests in a visible window, one at a time           | to watch what a test does                                          |
-| `npm run fw:debug`                    | step through a test line by line with the Playwright Inspector | when a test fails and you do not see why                           |
-| `npm run fw:report`                   | opens the HTML report of the last run                          | after every run                                                    |
-| `npm run check`                       | typecheck + lint + format check (runs no tests)                | before every commit                                                |
-| `npm run lint:fix` / `npm run format` | fix lint problems and formatting automatically                 | before every commit                                                |
+| Command                               | What it runs                                                       | When a professional runs it                                        |
+| ------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `npm run fw:smoke`                    | only `@smoke` tests (about 20, under a minute)                     | first, after every change: "is it basically working?"              |
+| `npm run fw:regression`               | only `@regression` tests                                           | before merging a change: "did I break anything that used to work?" |
+| `npm run fw:functional`               | the functional suite (`tests/functional`, see `docs/TEST_PLAN.md`) | to check every feature works as a user expects                     |
+| `npm run fw:test`                     | everything, on desktop and phone screens                           | before a release                                                   |
+| `npm run fw:api`                      | the API tests only (no browser, a few seconds)                     | while working on the backend                                       |
+| `npm run fw:ui`                       | the browser tests on a desktop screen                              | while working on the screens                                       |
+| `npm run fw:headed`                   | the browser tests in a visible window, one at a time               | to watch what a test does                                          |
+| `npm run fw:debug`                    | step through a test line by line with the Playwright Inspector     | when a test fails and you do not see why                           |
+| `npm run fw:report`                   | opens the HTML report of the last run                              | after every run                                                    |
+| `npm run check`                       | typecheck + lint + format check (runs no tests)                    | before every commit                                                |
+| `npm run lint:fix` / `npm run format` | fix lint problems and formatting automatically                     | before every commit                                                |
 
 Run one file or one test by name:
 
@@ -58,7 +59,8 @@ framework/
 ├── test-data/                  data files for data-driven tests (trade-pnl.json)
 ├── tests/
 │   ├── api/                    API tests: fast, no browser
-│   ├── ui/                     one screen at a time (data set up through the API)
+│   ├── ui/                     smoke checks: is each main screen basically working?
+│   ├── functional/             the functional suite: every feature, case by case (docs/TEST_PLAN.md)
 │   └── e2e/                    a few whole user journeys across screens
 └── reports/                    created by a run (not committed): html/, junit.xml, test-results/
 ```
@@ -71,7 +73,7 @@ test("a losing trade shows its loss", { tag: TAG.SMOKE }, async ({ data, tradesP
   await data.trade(account.id, (t) => t.losing(10)); // builder: only the detail that matters
 
   await tradesPage.open(); // page object
-  await tradesPage.showAllTime();
+  await tradesPage.showAccount(account);
 
   await expect(tradesPage.rowFor(account.name)).toShowMoney(-100); // custom matcher
 });
@@ -127,7 +129,7 @@ report.
 Every test makes its own uniquely named data (`PW-FW-...-w1-3`), so tests can run at the same time (`WORKERS`). Lesson
 learned while building this: the journal's database can give a deleted account's id to the next new account, so the
 clean-up and the delete tests identify data by its **unique name**, never by a remembered id. That bug made two tests
-fail about once in a hundred runs; the suite has since passed 576 runs in a row with 4 workers.
+fail about once in a hundred runs; the whole suite (125 tests) has since passed 5 times over, 625 runs, with 4 workers and no failures.
 
 **12. Evidence on failure.**
 When a test fails you get a screenshot, a video and a **trace** (every action, network call, console line and a

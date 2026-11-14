@@ -28,7 +28,7 @@ test.describe("Trader journey", { tag: [TAG.E2E, TAG.REGRESSION] }, () => {
     });
 
     await test.step("the trade is listed with +$200", async () => {
-      await tradesPage.showAllTime();
+      await tradesPage.showAccount(account);
       await expect(tradesPage.rowFor(account.name)).toShowMoney(200);
     });
 

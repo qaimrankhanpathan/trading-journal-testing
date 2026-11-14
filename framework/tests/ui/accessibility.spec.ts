@@ -11,7 +11,8 @@ const PAGES = ["/", "/trades/", "/accounts/", "/calculator/"];
 
 test.describe("Accessibility", { tag: [TAG.UI, TAG.A11Y, TAG.REGRESSION] }, () => {
   for (const path of PAGES) {
-    test(`${path} has no critical accessibility problems`, async ({ page }, testInfo) => {
+    test(`${path} has no critical accessibility problems`, async ({ data, page }, testInfo) => {
+      await data.account(); // the Dashboard shows a welcome card instead of its heading when there are no accounts
       await page.goto(path);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 

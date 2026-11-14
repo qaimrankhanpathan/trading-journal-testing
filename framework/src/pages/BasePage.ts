@@ -42,6 +42,11 @@ export abstract class BasePage {
     await expect(this.heading).toContainText(this.title);
   }
 
+  /** A tab in the "Sections" bar under the status bar: pages that belong together, e.g. Trade plan / Position size. */
+  sectionTab(label: string): Locator {
+    return this.page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: label, exact: true });
+  }
+
   /** Accepts the next browser confirm() box (the journal asks "Are you sure?" before some saves and deletes). */
   acceptNextDialog(): void {
     this.page.once("dialog", (dialog) => void dialog.accept());

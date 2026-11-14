@@ -13,6 +13,9 @@ export class CalculatorPage extends BasePage {
   readonly symbol: Locator;
   readonly entry: Locator;
   readonly stopLoss: Locator;
+  readonly resultCard: Locator;
+  /** The explanation shown instead of figures when no size can be given. */
+  readonly noResult: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -20,6 +23,8 @@ export class CalculatorPage extends BasePage {
     this.symbol = page.getByLabel("Symbol");
     this.entry = page.getByLabel("Entry");
     this.stopLoss = page.getByLabel("Stop loss");
+    this.resultCard = page.locator(".card", { has: page.getByRole("heading", { name: "Result" }) });
+    this.noResult = this.resultCard.locator(".empty, .error").first();
   }
 
   /** One figure of the Result card, e.g. figure("Risk") is the "$50.00" next to "Risk". */
@@ -39,5 +44,15 @@ export class CalculatorPage extends BasePage {
   /** The dollar risk shown, as a number. */
   async riskDollars(): Promise<number> {
     return parseMoney(await this.figure("Risk").innerText());
+  }
+
+  /** The lot size shown, as a number. */
+  async lots(): Promise<number> {
+    return Number((await this.figure("Lots").innerText()).trim());
+  }
+
+  /** The lot size shown, or 0 when the calculator shows an explanation instead of figures. */
+  async lotsOrZero(): Promise<number> {
+    return (await this.figure("Lots").count()) ? this.lots() : 0;
   }
 }
